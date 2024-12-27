@@ -7,6 +7,12 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login2.php");
     exit();
 }
+
+
+// If the user is logged in, display their ID.
+if (isset($_SESSION['user_id'])) {
+
+}
 ?>
 
 <!DOCTYPE html>
@@ -22,6 +28,7 @@ if (!isset($_SESSION['user_id'])) {
 
     <!-- CSS Assets -->
     <link rel="stylesheet" href="assets/css/app.css">
+    
 
     <!-- Javascript Assets -->
     <script src="assets/js/app.js" defer=""></script>
@@ -90,13 +97,259 @@ if (!isset($_SESSION['user_id'])) {
               </a> -->
 
               <!-- Add Log -->
-              <a href="elements-avatar.html" class="flex size-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25" x-tooltip.placement.right="'New Log'">
+              <!-- <a href="" class="flex size-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25" x-tooltip.placement.right="'New Log'">
                 <svg class="size-7" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M13.3111 14.75H5.03356C3.36523 14.75 2.30189 12.9625 3.10856 11.4958L5.24439 7.60911L7.24273 3.96995C8.07689 2.45745 10.2586 2.45745 11.0927 3.96995L13.1002 7.60911L14.0627 9.35995L15.2361 11.4958C16.0427 12.9625 14.9794 14.75 13.3111 14.75Z" fill="currentColor"></path>
                   <path fill-opacity="0.3" d="M21.1667 15.2083C21.1667 18.4992 18.4992 21.1667 15.2083 21.1667C11.9175 21.1667 9.25 18.4992 9.25 15.2083C9.25 15.0525 9.25917 14.9058 9.26833 14.75H13.3108C14.9792 14.75 16.0425 12.9625 15.2358 11.4958L14.0625 9.36C14.4292 9.28666 14.8142 9.25 15.2083 9.25C18.4992 9.25 21.1667 11.9175 21.1667 15.2083Z" fill="currentColor"></path>
                 </svg>
-              </a>
+              </a> -->
 
+              <div x-data="{ showModal: false }">
+                <!-- Button -->
+                <a 
+                    href="javascript:void(0)" 
+                    class="flex size-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25"
+                    x-tooltip.placement.right="'New Log'"
+                    @click="showModal = true"
+                >
+                    <svg class="size-7" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.3111 14.75H5.03356C3.36523 14.75 2.30189 12.9625 3.10856 11.4958L5.24439 7.60911L7.24273 3.96995C8.07689 2.45745 10.2586 2.45745 11.0927 3.96995L13.1002 7.60911L14.0627 9.35995L15.2361 11.4958C16.0427 12.9625 14.9794 14.75 13.3111 14.75Z" fill="currentColor"></path>
+                    <path fill-opacity="0.3" d="M21.1667 15.2083C21.1667 18.4992 18.4992 21.1667 15.2083 21.1667C11.9175 21.1667 9.25 18.4992 9.25 15.2083C9.25 15.0525 9.25917 14.9058 9.26833 14.75H13.3108C14.9792 14.75 16.0425 12.9625 15.2358 11.4958L14.0625 9.36C14.4292 9.28666 14.8142 9.25 15.2083 9.25C18.4992 9.25 21.1667 11.9175 21.1667 15.2083Z" fill="currentColor"></path>
+                    </svg>
+                </a>
+
+                <!-- Modal -->
+                <template x-teleport="#x-teleport-target">
+                    <div 
+                    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+                    x-show="showModal"
+                    @keydown.window.escape="showModal = false"
+                    >
+                    <!-- Modal Content -->
+                    <div  
+                        class="w-[90%] max-w-5xl p-5 bg-white rounded-lg shadow-lg dark:bg-gray-800"
+                        x-show="showModal"
+                        x-transition:enter="ease-out duration-300"
+                        x-transition:enter-start="opacity-0 translate-y-4"
+                        x-transition:enter-end="opacity-100 translate-y-0"
+                        x-transition:leave="ease-in duration-200"
+                        x-transition:leave-start="opacity-100 translate-y-0"
+                        x-transition:leave-end="opacity-0 translate-y-4"
+                    >
+                        <!-- Header -->
+                        <div class="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700">
+                        <h2 class="text-xl font-bold text-gray-700 dark:text-gray-200">Call Log Form</h2>
+                        <button 
+                            @click="showModal = false" 
+                            class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none"
+                        >
+                            ✖
+                        </button>
+                        </div>
+
+                        <!-- Modal Form -->
+                        <form class="grid grid-cols-2 gap-6 mt-6" method="post" action="process_add_log.php">
+                            <!-- Left Column -->
+                            <div class="space-y-4">
+                            <!-- Hidden User ID field -->
+                                <input type="hidden" name="user_id" value="<?php echo $_SESSION['user_id']; ?>">
+                            <!-- Service Type -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="service_type">
+                                Service Type
+                                </label>
+                                <select id="service_type" name="service_type"
+                                class="w-full mt-1 rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500" 
+                                >
+                                <option>Select Service Type</option>
+                                <?php
+                                    // Fetch service types from the database
+                                    $service_types_result = mysqli_query($conn, "SELECT * FROM service_types");
+                                    while ($row = mysqli_fetch_assoc($service_types_result)) {
+                                        echo "<option value='{$row['id']}'>{$row['service_type']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            
+                            <!-- Call Type -->
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" for="call_type">
+                                Call Type
+                                </label>
+                                <select id="call_type" name="call_type"
+                                class="w-full mt-1 rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
+                                >
+                                <option value="">Select Call Type</option>
+                                </select>
+                            </div>
+                                                <script>
+                                                    // JavaScript (AJAX) to update the Call Type dropdown based on the selected Service Type
+                                                    document.getElementById('service_type').addEventListener('change', function() {
+                                                        var serviceTypeId = this.value;
+                                                        
+                                                        // If no service type is selected, clear the call type dropdown
+                                                        if (serviceTypeId === "") {
+                                                            document.getElementById('call_type').innerHTML = '<option value="">Select Call Type</option>';
+                                                            return;
+                                                        }
+
+                                                        // Send the selected service type ID to the server using AJAX
+                                                        var xhr = new XMLHttpRequest();
+                                                        xhr.open('GET', 'get_call_types.php?service_type_id=' + serviceTypeId, true);
+                                                        xhr.onload = function() {
+                                                            if (xhr.status === 200) {
+                                                                // Populate the Call Type dropdown with the received data
+                                                                document.getElementById('call_type').innerHTML = xhr.responseText;
+                                                            }
+                                                        };
+                                                        xhr.send();
+                                                    });
+                                                </script>
+                            <!-- Contact Number -->
+                            <div>
+                                <label for="contactNumber" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Contact Number
+                                </label>
+                                <input id="contactNumber" name="contactNumber"
+                                type="text" 
+                                class="w-full mt-1 rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Enter Contact Number"
+                                />
+                            </div>
+                            
+                            <!-- Time -->
+                            <div>
+                                <label for="time" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Time
+                                </label>
+                                <input id="time" name="call_time"
+                                type="text" 
+                                class="w-full mt-1 rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Enter Time"
+                                />
+                            </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="space-y-4">
+                            <!-- Name -->
+                            <div>
+                                <label for="name"  class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Name
+                                </label>
+                                <input id="name" name="name"
+                                type="text" 
+                                class="w-full mt-1 rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Enter Name"
+                                />
+                            </div>
+
+                            <!-- Age -->
+                            <div>
+                                <label for="age" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Age
+                                </label>
+                                <input id="age" name="age"
+                                type="number" 
+                                class="w-full mt-1 rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Enter Age"
+                                />
+                            </div>
+
+                            <!-- Location -->
+                            <div>
+                                <label for="location" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Location
+                                </label>
+                                <input id="location" name="location"
+                                type="text" 
+                                class="w-full mt-1 rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Enter Location"
+                                />
+                            </div>
+                            
+                            <!-- Status -->
+                            <div>
+                                <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Status
+                                </label>
+                                <select id="status" name="status"
+                                class="w-full mt-1 rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
+                                >
+                                <option>Select Status</option>
+                                <option value="pending_case">pending_case</option>
+                                <option value="closed_case">closed_case</option>
+                                </select>
+                            </div>
+                            </div>
+
+                            <!-- Full-Width Fields -->
+                            <div class="col-span-2 space-y-4">
+                            <!-- Reason of Call -->
+                            <div>
+                                <label for="reason_of_call" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Reason of Call
+                                </label>
+                                <textarea id="reason_of_call" name="reason_of_call"
+                                rows="3" 
+                                class="w-full mt-1 rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Enter Reason of Call"
+                                ></textarea>
+                            </div>
+
+                            <!-- Actions Taken -->
+                            <div>
+                                <label for="action_taken" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Actions Taken
+                                </label>
+                                <textarea id="action_taken" name="action_taken"
+                                rows="3" 
+                                class="w-full mt-1 rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Enter Actions Taken"
+                                ></textarea>
+                            </div>
+
+                            <!-- Remarks -->
+                            <div>
+                                <label for="remarks" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Remarks
+                                </label>
+                                <textarea id="remarks" name="remarks"
+                                rows="2" 
+                                class="w-full mt-1 rounded-md border-gray-300 shadow-sm dark:bg-gray-700 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Enter Remarks"
+                                ></textarea>
+                            </div>
+                            </div>
+                        </form>
+
+                        <!-- Footer -->
+                            <div class="flex justify-end mt-6">
+                                <button 
+                                    type="submit" 
+                                    class="px-4 py-2 text-blue bg-blue-600 rounded-lg hover:bg-blue-700"
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                        </div>
+                    </template>
+                </div>
+
+
+
+
+
+
+            
+            
+            
+            
+            
+            
+            <!-- End for the Side Buttons -->
             </div>
 
             <!-- Bottom Links -->
@@ -286,7 +539,7 @@ if (!isset($_SESSION['user_id'])) {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
                   </svg>
                 </div>
-                <p class="mt-1 text-xs+">Fire</p>
+                <p class="mt-1 text-xs+">Completed</p>
               </div>
               <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
                 <div class="flex justify-between">
@@ -297,7 +550,7 @@ if (!isset($_SESSION['user_id'])) {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                   </svg>
                 </div>
-                <p class="mt-1 text-xs+">EMS</p>
+                <p class="mt-1 text-xs+">Pending</p>
               </div>
               <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
                 <div class="flex justify-between">
@@ -309,7 +562,7 @@ if (!isset($_SESSION['user_id'])) {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"></path>
                   </svg>
                 </div>
-                <p class="mt-1 text-xs+">Rescue</p>
+                <p class="mt-1 text-xs+">Dispatch</p>
               </div>
               <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
                 <div class="flex justify-between">
@@ -321,7 +574,7 @@ if (!isset($_SESSION['user_id'])) {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"></path>
                   </svg>
                 </div>
-                <p class="mt-1 text-xs+">Other</p>
+                <p class="mt-1 text-xs+">Dispatch</p>
               </div>
               <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
                 <div class="flex justify-between">
@@ -333,7 +586,7 @@ if (!isset($_SESSION['user_id'])) {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"></path>
                   </svg>
                 </div>
-                <p class="mt-1 text-xs+">Prank Calls</p>
+                <p class="mt-1 text-xs+">Dispatch</p>
               </div>
             </div>
 
@@ -1175,6 +1428,7 @@ if (!isset($_SESSION['user_id'])) {
                                 <thead>
                                     <tr>
                                         <th class="whitespace-nowrap rounded-l-lg bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">#</th>
+                                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5 agent-id-column">Agent ID</th>
                                         <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Type of Service</th>
                                         <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Call Type</th>
                                         <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Call Date</th>
@@ -1207,40 +1461,28 @@ if (!isset($_SESSION['user_id'])) {
                                     $total_pages = ceil($total_rows / $rows_per_page);
 
                                     $query = "
-                                        SELECT cl.id,
-                                            st.service_type,
-                                            ct.call_type,
-                                            cl.call_date,
-                                            cl.call_time,
-                                            cl.contact_number,
-                                            cl.call_count,
-                                            cl.name,
-                                            cl.age,
-                                            cl.location,
-                                            cl.reason_of_call,
-                                            cl.actions_taken,
-                                            cl.remarks
+                                        SELECT cl.id, cl.agent_id, st.service_type, ct.call_type, cl.call_date, cl.call_time,
+                                       cl.contact_number, cl.call_count, cl.name, cl.age, cl.location, cl.status
                                         FROM call_logs cl
                                         LEFT JOIN service_types st ON cl.type_of_service = st.id
                                         LEFT JOIN call_types ct ON cl.call_type = ct.id
-                                        LIMIT $offset, $rows_per_page
-                                    ";
-                                    $result = mysqli_query($conn, $query);
+                                        WHERE cl.agent_id = '$user_id' AND cl.status = 'pending_case'";
 
-                                    $contactNumberCounts = [];
-                                    $no = 1;
-
-                                    if (mysqli_num_rows($result) > 0) {
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            $contactNumber = $row['contact_number'];
-                                            if (isset($contactNumberCounts[$contactNumber])) {
-                                                $contactNumberCounts[$contactNumber]++;
-                                            } else {
-                                                $contactNumberCounts[$contactNumber] = 1;
-                                            }
+                                        $result = mysqli_query($conn, $query);
+                                        $contactNumberCounts = [];
+                                        if (mysqli_num_rows($result) > 0) {
+                                            $no = 1;
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                $contactNumber = $row['contact_number'];
+                                                if (isset($contactNumberCounts[$contactNumber])) {
+                                                    $contactNumberCounts[$contactNumber]++;
+                                                } else {
+                                                    $contactNumberCounts[$contactNumber] = 1;
+                                                }
 
                                             echo "<tr class='clickable-row' 
-                                                    data-service-type='{$row['service_type']}' 
+                                                    data-agent-id='{$row['agent_id']}' 
+                                                    data-service-type='{$row['service_type']}'
                                                     data-call-type='{$row['call_type']}' 
                                                     data-call-date='{$row['call_date']}' 
                                                     data-call-time='{$row['call_time']}' 
@@ -1250,6 +1492,7 @@ if (!isset($_SESSION['user_id'])) {
                                                     data-age='{$row['age']}' 
                                                     data-location='{$row['location']}'>
                                                     <td class='whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5'>{$no}</td>
+                                                    <td class='whitespace-nowrap px-4 py-3 sm:px-5 agent-id-column'>{$row['agent_id']}</td>
                                                     <td class='whitespace-nowrap px-4 py-3 sm:px-5'>{$row['service_type']}</td>
                                                     <td class='whitespace-nowrap px-4 py-3 sm:px-5'>{$row['call_type']}</td>
                                                     <td class='whitespace-nowrap px-4 py-3 sm:px-5'>{$row['call_date']}</td>
