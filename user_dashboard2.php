@@ -89,6 +89,14 @@ if (!isset($_SESSION['user_id'])) {
                 </svg>
               </a> -->
 
+              <!-- Add Log -->
+              <a href="elements-avatar.html" class="flex size-11 items-center justify-center rounded-lg outline-none transition-colors duration-200 hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25" x-tooltip.placement.right="'New Log'">
+                <svg class="size-7" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M13.3111 14.75H5.03356C3.36523 14.75 2.30189 12.9625 3.10856 11.4958L5.24439 7.60911L7.24273 3.96995C8.07689 2.45745 10.2586 2.45745 11.0927 3.96995L13.1002 7.60911L14.0627 9.35995L15.2361 11.4958C16.0427 12.9625 14.9794 14.75 13.3111 14.75Z" fill="currentColor"></path>
+                  <path fill-opacity="0.3" d="M21.1667 15.2083C21.1667 18.4992 18.4992 21.1667 15.2083 21.1667C11.9175 21.1667 9.25 18.4992 9.25 15.2083C9.25 15.0525 9.25917 14.9058 9.26833 14.75H13.3108C14.9792 14.75 16.0425 12.9625 15.2358 11.4958L14.0625 9.36C14.4292 9.28666 14.8142 9.25 15.2083 9.25C18.4992 9.25 21.1667 11.9175 21.1667 15.2083Z" fill="currentColor"></path>
+                </svg>
+              </a>
+
             </div>
 
             <!-- Bottom Links -->
@@ -342,36 +350,6 @@ if (!isset($_SESSION['user_id'])) {
                 <h2 class="font-medium tracking-wide text-slate-700 dark:text-navy-100">
                   Total Calls Today
                 </h2>
-
-                <div x-data="usePopper({placement:'bottom-end',offset:4})" @click.outside="isShowPopper && (isShowPopper = false)" class="inline-flex">
-                  <button x-ref="popperRef" @click="isShowPopper = !isShowPopper" class="btn -mr-2 size-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewbox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
-                    </svg>
-                  </button>
-
-                  <div x-ref="popperRoot" class="popper-root" :class="isShowPopper && 'show'">
-                    <div class="popper-box rounded-md border border-slate-150 bg-white py-1.5 font-inter dark:border-navy-500 dark:bg-navy-700">
-                      <ul>
-                        <li>
-                          <a href="#" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Action</a>
-                        </li>
-                        <li>
-                          <a href="#" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Another Action</a>
-                        </li>
-                        <li>
-                          <a href="#" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Something else</a>
-                        </li>
-                      </ul>
-                      <div class="my-1 h-px bg-slate-150 dark:bg-navy-500"></div>
-                      <ul>
-                        <li>
-                          <a href="#" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Separated Link</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
               </div>
               <p class="grow px-4 text-xl font-semibold text-slate-700 dark:text-navy-100 sm:px-5">
                 169.6k
@@ -1192,13 +1170,113 @@ if (!isset($_SESSION['user_id'])) {
                     </div>
                     </div>
                     <!-- Table  -->
-                    
+                    <div class="is-scrollbar-hidden min-w-full overflow-x-auto">
+                            <table class="is-zebra w-full text-left" id="callLogTable">
+                                <thead>
+                                    <tr>
+                                        <th class="whitespace-nowrap rounded-l-lg bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">#</th>
+                                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Type of Service</th>
+                                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Call Type</th>
+                                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Call Date</th>
+                                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Call Time</th>
+                                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Contact Number</th>
+                                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Call Count</th>
+                                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Name</th>
+                                        <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Age</th>
+                                        <th class="whitespace-nowrap rounded-r-lg bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Location</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                    // Define the number of rows per page
+                                    $rows_per_page = 10;
+
+                                    // Get the current page from the URL, default to 1 if not set
+                                    $page = isset($_GET['page']) ? $_GET['page'] : 1;
+
+                                    // Calculate the offset for the query
+                                    $offset = ($page - 1) * $rows_per_page;
+
+                                    // Query to get the total number of rows
+                                    $count_query = "SELECT COUNT(*) AS total_rows FROM call_logs";
+                                    $count_result = mysqli_query($conn, $count_query);
+                                    $count_row = mysqli_fetch_assoc($count_result);
+                                    $total_rows = $count_row['total_rows'];
+
+                                    // Calculate the total number of pages
+                                    $total_pages = ceil($total_rows / $rows_per_page);
+
+                                    $query = "
+                                        SELECT cl.id,
+                                            st.service_type,
+                                            ct.call_type,
+                                            cl.call_date,
+                                            cl.call_time,
+                                            cl.contact_number,
+                                            cl.call_count,
+                                            cl.name,
+                                            cl.age,
+                                            cl.location,
+                                            cl.reason_of_call,
+                                            cl.actions_taken,
+                                            cl.remarks
+                                        FROM call_logs cl
+                                        LEFT JOIN service_types st ON cl.type_of_service = st.id
+                                        LEFT JOIN call_types ct ON cl.call_type = ct.id
+                                        LIMIT $offset, $rows_per_page
+                                    ";
+                                    $result = mysqli_query($conn, $query);
+
+                                    $contactNumberCounts = [];
+                                    $no = 1;
+
+                                    if (mysqli_num_rows($result) > 0) {
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            $contactNumber = $row['contact_number'];
+                                            if (isset($contactNumberCounts[$contactNumber])) {
+                                                $contactNumberCounts[$contactNumber]++;
+                                            } else {
+                                                $contactNumberCounts[$contactNumber] = 1;
+                                            }
+
+                                            echo "<tr class='clickable-row' 
+                                                    data-service-type='{$row['service_type']}' 
+                                                    data-call-type='{$row['call_type']}' 
+                                                    data-call-date='{$row['call_date']}' 
+                                                    data-call-time='{$row['call_time']}' 
+                                                    data-contact-number='{$row['contact_number']}' 
+                                                    data-count='{$contactNumberCounts[$contactNumber]}'
+                                                    data-name='{$row['name']}' 
+                                                    data-age='{$row['age']}' 
+                                                    data-location='{$row['location']}'>
+                                                    <td class='whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5'>{$no}</td>
+                                                    <td class='whitespace-nowrap px-4 py-3 sm:px-5'>{$row['service_type']}</td>
+                                                    <td class='whitespace-nowrap px-4 py-3 sm:px-5'>{$row['call_type']}</td>
+                                                    <td class='whitespace-nowrap px-4 py-3 sm:px-5'>{$row['call_date']}</td>
+                                                    <td class='whitespace-nowrap px-4 py-3 sm:px-5'>{$row['call_time']}</td>
+                                                    <td class='whitespace-nowrap px-4 py-3 sm:px-5'>{$row['contact_number']}</td>
+                                                    <td class='whitespace-nowrap px-4 py-3 sm:px-5'>{$contactNumberCounts[$contactNumber]}</td>
+                                                    <td class='whitespace-nowrap px-4 py-3 sm:px-5'>{$row['name']}</td>
+                                                    <td class='whitespace-nowrap px-4 py-3 sm:px-5'>{$row['age']}</td>
+                                                    <td class='whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5'>{$row['location']}</td>
+                                                </tr>";
+                                            $no++;
+                                        }
+                                    } else {
+                                        echo "<tr><td colspan='11' class='text-center'>No records found</td></tr>";
+                                    }
+                                    mysqli_close($conn);
+                                ?>
+                                </tbody>
+                            </table>
+                            </div>
+
                     <!-- Pagination -->
                     <div class="flex flex-col justify-between space-y-4 px-4 py-4 sm:flex-row sm:items-center sm:space-y-0 sm:px-5">
                         <div class="flex items-center space-x-2 text-xs+">
                         <span>Show</span>
                         <label class="block">
-                            <select class="form-select rounded-full border border-slate-300 bg-white px-2 py-1 pr-6 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
+                            <select id="entriesPerPage" class="form-select rounded-full border border-slate-300 bg-white px-2 py-1 pr-6 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
                             <option>10</option>
                             <option>30</option>
                             <option>50</option>
@@ -1206,47 +1284,13 @@ if (!isset($_SESSION['user_id'])) {
                         </label>
                         <span>entries</span>
                         </div>
-
-                        <ol class="pagination">
-                        <li class="rounded-l-lg bg-slate-150 dark:bg-navy-500">
-                            <a href="#" class="flex size-8 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-300 focus:bg-slate-300 active:bg-slate-300/80 dark:text-navy-200 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewbox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
-                            </svg>
-                            </a>
-                        </li>
-                        <li class="bg-slate-150 dark:bg-navy-500">
-                            <a href="#" class="flex h-8 min-w-[2rem] items-center justify-center rounded-lg px-3 leading-tight transition-colors hover:bg-slate-300 focus:bg-slate-300 active:bg-slate-300/80 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">1</a>
-                        </li>
-                        <li class="bg-slate-150 dark:bg-navy-500">
-                            <a href="#" class="flex h-8 min-w-[2rem] items-center justify-center rounded-lg bg-primary px-3 leading-tight text-white transition-colors hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">2</a>
-                        </li>
-                        <li class="bg-slate-150 dark:bg-navy-500">
-                            <a href="#" class="flex h-8 min-w-[2rem] items-center justify-center rounded-lg px-3 leading-tight transition-colors hover:bg-slate-300 focus:bg-slate-300 active:bg-slate-300/80 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">3</a>
-                        </li>
-                        <li class="bg-slate-150 dark:bg-navy-500">
-                            <a href="#" class="flex h-8 min-w-[2rem] items-center justify-center rounded-lg px-3 leading-tight transition-colors hover:bg-slate-300 focus:bg-slate-300 active:bg-slate-300/80 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">4</a>
-                        </li>
-                        <li class="bg-slate-150 dark:bg-navy-500">
-                            <a href="#" class="flex h-8 min-w-[2rem] items-center justify-center rounded-lg px-3 leading-tight transition-colors hover:bg-slate-300 focus:bg-slate-300 active:bg-slate-300/80 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">5</a>
-                        </li>
-                        <li class="rounded-r-lg bg-slate-150 dark:bg-navy-500">
-                            <a href="#" class="flex size-8 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-slate-300 focus:bg-slate-300 active:bg-slate-300/80 dark:text-navy-200 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewbox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                            </a>
-                        </li>
+                        <ol id="paginationControls" class="pagination">
                         </ol>
-
-                        <div class="text-xs+">1 - 10 of 10 entries</div>
+                        <div id="tableInfo" class="text-xs+"></div>
                     </div>
 
                     </div>
                 </div>
-
-
-
 
 
                 </div>
@@ -1382,6 +1426,67 @@ if (!isset($_SESSION['user_id'])) {
     <div id="x-teleport-target"></div>
     <script>
       window.addEventListener("DOMContentLoaded", () => Alpine.start());
+
+    // Pagination
+            document.addEventListener('DOMContentLoaded', function () {
+                const table = document.querySelector('#callLogTable tbody');
+                const entriesPerPageSelect = document.querySelector('#entriesPerPage');
+                const paginationControls = document.querySelector('#paginationControls');
+                const tableInfo = document.querySelector('#tableInfo');
+
+                let rows = Array.from(table.querySelectorAll('tr'));
+                let currentPage = 1;
+                let rowsPerPage = parseInt(entriesPerPageSelect.value);
+
+                function renderTable() {
+                    const start = (currentPage - 1) * rowsPerPage;
+                    const end = start + rowsPerPage;
+
+                    // Hide all rows
+                    rows.forEach((row, index) => {
+                        row.style.display = index >= start && index < end ? '' : 'none';
+                    });
+
+                    // Update table info
+                    const totalRows = rows.length;
+                    tableInfo.textContent = `${start + 1} - ${Math.min(end, totalRows)} of ${totalRows} entries`;
+
+                    renderPaginationControls(totalRows);
+                }
+
+                function renderPaginationControls(totalRows) {
+                    paginationControls.innerHTML = '';
+                    const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+                    for (let i = 1; i <= totalPages; i++) {
+                        const li = document.createElement('li');
+                        li.classList.add('bg-slate-150', 'dark:bg-navy-500');
+                        if (i === currentPage) {
+                            li.innerHTML = `<a href="#" class="flex h-8 min-w-[2rem] items-center justify-center rounded-lg bg-primary px-3 leading-tight text-white">${i}</a>`;
+                        } else {
+                            li.innerHTML = `<a href="#" class="flex h-8 min-w-[2rem] items-center justify-center rounded-lg px-3 leading-tight">${i}</a>`;
+                        }
+
+                        li.querySelector('a').addEventListener('click', (e) => {
+                            e.preventDefault();
+                            currentPage = i;
+                            renderTable();
+                        });
+
+                        paginationControls.appendChild(li);
+                    }
+                }
+
+                entriesPerPageSelect.addEventListener('change', () => {
+                    rowsPerPage = parseInt(entriesPerPageSelect.value);
+                    currentPage = 1; // Reset to the first page
+                    renderTable();
+                });
+
+                // Initialize table rendering
+                renderTable();
+            });
+
     </script>
   </body>
 </html>
