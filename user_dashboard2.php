@@ -286,7 +286,7 @@ if (!isset($_SESSION['user_id'])) {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
                   </svg>
                 </div>
-                <p class="mt-1 text-xs+">Completed</p>
+                <p class="mt-1 text-xs+">Fire</p>
               </div>
               <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
                 <div class="flex justify-between">
@@ -297,7 +297,7 @@ if (!isset($_SESSION['user_id'])) {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                   </svg>
                 </div>
-                <p class="mt-1 text-xs+">Pending</p>
+                <p class="mt-1 text-xs+">EMS</p>
               </div>
               <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
                 <div class="flex justify-between">
@@ -309,7 +309,7 @@ if (!isset($_SESSION['user_id'])) {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"></path>
                   </svg>
                 </div>
-                <p class="mt-1 text-xs+">Dispatch</p>
+                <p class="mt-1 text-xs+">Rescue</p>
               </div>
               <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
                 <div class="flex justify-between">
@@ -321,7 +321,7 @@ if (!isset($_SESSION['user_id'])) {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"></path>
                   </svg>
                 </div>
-                <p class="mt-1 text-xs+">Dispatch</p>
+                <p class="mt-1 text-xs+">Other</p>
               </div>
               <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
                 <div class="flex justify-between">
@@ -333,7 +333,7 @@ if (!isset($_SESSION['user_id'])) {
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"></path>
                   </svg>
                 </div>
-                <p class="mt-1 text-xs+">Dispatch</p>
+                <p class="mt-1 text-xs+">Prank Calls</p>
               </div>
             </div>
 
